@@ -23,6 +23,19 @@ entryPoints:
   websecure:
     address: :443
 
+certificatesResolvers:
+  cloudflare:
+    acme:
+      email: "info@gladwelln.dev"
+      storage: /etc/traefik/certs/cloudflare-acme.json
+      caServer: 'https://acme-v02.api.letsencrypt.org/directory'
+      keyType: EC256
+      dnsChallenge:
+        provider: cloudflare
+        resolvers:
+          - "1.1.1.1:53"
+          - "8.8.8.8:53"
+
 serversTransport:
   insecureSkipVerify: true
 
@@ -30,4 +43,7 @@ providers:
   docker:
     exposedByDefault: false
     endpoint: 'unix:///var/run/docker.sock'
+    watch: true
+  file:
+    directory: /etc/traefik/conf/
     watch: true
