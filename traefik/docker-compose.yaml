@@ -1,7 +1,7 @@
 services:
   traefik:
     container_name: traefik
-    image: traefik:3.0.1
+    image: traefik:v3.6.6
     ports:
       - 80:80
       - 8080:8080
@@ -17,6 +17,17 @@ services:
       - frontend
       - backend
     restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.traefik.tls=true
+      - traefik.http.routers.traefik.entrypoints=websecure
+      - traefik.http.services.traefik.loadbalancer.server.port=8080
+      - traefik.http.routers.traefik.rule=Host(`traefik.$SUB_DOMAIN.$DOMAIN`)
+
+      - traefik.http.routers.traefik.tls.certresolver=cloudflare
+      - traefik.http.routers.traefik.service=api@internal
+      - traefik.http.routers.traefik.tls.domains[0].main=$SUB_DOMAIN.$DOMAIN
+      - traefik.http.routers.traefik.tls.domains[0].sans=*.$SUB_DOMAIN.$DOMAIN
 networks:
   frontend:
     external: true
