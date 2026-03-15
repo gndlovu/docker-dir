@@ -1,0 +1,22 @@
+services:
+  registry:
+    image: registry:2
+    container_name: registry
+    ports:
+      - 5000:5000
+    volumes:
+      - registry-data:/var/lib/registry
+    networks:
+      - frontend
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.registry.rule=Host(`registry.gladwelln.dev`)"
+      - "traefik.http.routers.registry.entrypoints=web"
+      - "traefik.http.services.registry.loadbalancer.server.port=5000"
+
+volumes:
+  registry-data:
+networks:
+  frontend:
+    external: true
