@@ -1,0 +1,13 @@
+version: 0.1
+
+http:
+  addr: :5000
+  headers:
+    Access-Control-Allow-Origin: ['http://192.168.68.50:8088']
+    Access-Control-Allow-Methods: ['HEAD', 'GET', 'OPTIONS', 'DELETE', 'PUT']
+    Access-Control-Allow-Headers: ['Authorization', 'Accept', 'Cache-Control']
+    Access-Control-Expose-Headers: ['Docker-Content-Digest']
+
+storage:
+  filesystem:
+    rootdirectory: /var/lib/registry

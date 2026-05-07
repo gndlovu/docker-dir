@@ -6,15 +6,30 @@ services:
       - 5000:5000
     volumes:
       - registry-data:/var/lib/registry
+      - ./config.yml:/etc/docker/registry/config.yml
     networks:
       - frontend
     restart: unless-stopped
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.registry.rule=Host(`registry.gladwelln.dev`)"
-      - "traefik.http.routers.registry.entrypoints=web"
-      - "traefik.http.services.registry.loadbalancer.server.port=5000"
 
+      # environment:
+      # REGISTRY_HTTP_HEADERS_ACCESS-CONTROL-ALLOW-ORIGIN: '["http://192.168.68.50:8088"]'
+      # REGISTRY_HTTP_HEADERS_ACCESS-CONTROL-ALLOW-METHODS: '["HEAD", "GET", "OPTIONS", "DELETE"]'
+      #REGISTRY_HTTP_HEADERS_ACCESS-CONTROL-EXPOSE-HEADERS: '["Docker-Content-Digest", "Authorization", "Accept", "Content-Type"]'
+      #REGISTRY_STORAGE_DELETE_ENABLED: "true"
+        #labels:
+      # - "traefik.enable=true"
+        #  - "traefik.http.routers.registry.rule=Host(`registry.gladwelln.dev`)"
+        # - "traefik.http.routers.registry.entrypoints=web"
+        # - "traefik.http.services.registry.loadbalancer.server.port=5000"
+
+      # CORS middleware
+      #- "traefik.http.middlewares.registry-ipallow.ipwhitelist.sourcerange=192.168.68.50/32,192.168.68.57/32"
+      #- "traefik.http.middlewares.registry-cors.headers.accesscontrolalloworiginlist=192.168.68.57,http://192.168.68.50:8088"
+        #- "traefik.http.middlewares.registry-cors.headers.accesscontrolallowmethods=*"
+        # - "traefik.http.middlewares.registry-cors.headers.accesscontrolallowheaders=*"
+
+      # attach middleware
+      #- "traefik.http.routers.registry.middlewares=registry-cors"
 volumes:
   registry-data:
 networks:

@@ -1,0 +1,10 @@
+services:
+  registry-ui:
+    image: joxit/docker-registry-ui:latest
+    ports:
+      - 8088:80
+    environment:
+      #- REGISTRY_URL=http://192.168.68.50:5000
+      - NGINX_PROXY_PASS_URL=http://192.168.68.50:5000
+      - DELETE_IMAGES=true
+    restart: unless-stopped
