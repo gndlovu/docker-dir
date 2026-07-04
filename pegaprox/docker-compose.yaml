@@ -1,0 +1,23 @@
+services:
+  pegaprox:
+    image: ghcr.io/pegaprox/pegaprox:latest
+    container_name: pegaprox
+    volumes:
+      - pegaprox-config:/app/config
+      - pegaprox-logs:/app/logs
+    networks:
+      - frontend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pegaprox.rule=Host(`://prox.gladwelln.dev`)"
+      - "traefik.http.routers.pegaprox.entrypoints=web"
+      - "traefik.http.services.pegaprox.loadbalancer.server.port=5000"
+    restart: unless-stopped
+
+volumes:
+  pegaprox-config:
+  pegaprox-logs:
+
+networks:
+  frontend:
+    external: true
