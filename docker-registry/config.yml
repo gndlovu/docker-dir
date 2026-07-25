@@ -11,3 +11,5 @@ http:
 storage:
   filesystem:
     rootdirectory: /var/lib/registry
+  delete:
+    enabled: true
