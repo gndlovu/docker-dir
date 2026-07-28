@@ -1,0 +1,18 @@
+services:
+  infisical:
+    container_name: infisical
+    restart: unless-stopped
+    image: infisical/infisical:latest # TODO PIN THIS TO A SPECIFIC TAG
+    pull_policy: always
+    env_file: .env
+    ports:
+      - 80:3001
+    environment:
+      - NODE_ENV=production
+      - DB_CONNECTION_URI=${DB_CONNECTION_URI}
+      - REDIS_URL=${REDIS_URL}
+    networks:
+      - infisical
+
+networks:
+  infisical:
