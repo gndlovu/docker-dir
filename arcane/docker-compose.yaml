@@ -8,9 +8,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - arcane-data:/app/data
     environment:
-      - ENCRYPTION_KEY=$ENCRYPTION_KEY
-      - JWT_SECRET=$JWT_SECRET
-      - TZ=$TIME_ZONE
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - JWT_SECRET=${JWT_SECRET}
+      - TZ=${TIME_ZONE}
     # cgroup: host
     labels:
       - "traefik.enable=true"
