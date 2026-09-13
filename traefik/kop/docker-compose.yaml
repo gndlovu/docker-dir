@@ -1,0 +1,16 @@
+services:
+  traefik-kop:
+    container_name: traefik-kop
+    image: ghcr.io/cblomart/traefik-kop:latest
+    restart: always
+    volumes:
+      # Allows the agent to watch local containers spin up/down
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - KOP_REDIS_ADDR=${REDIS_ADDR}
+      - KOP_REDIS_PASSWORD=${REDIS_PASSWORD}
+      - KOP_REDIS_KEY=${REDIS_KEY}
+
+      # Tell Kop the local IP address of THIS specific server node
+      # (Traefik needs to know where to route the traffic over the LAN)
+      - KOP_BIND_IP=${SERVER_IP}
