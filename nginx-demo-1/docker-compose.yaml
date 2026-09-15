@@ -5,6 +5,8 @@ services:
     container_name: nginx-demo-1
     volumes:
       - ./config/default.conf:/etc/nginx/conf.d/default.conf:ro
+    environment:
+      - INFISICAL_TOKEN=${INFISICAL_TOKEN}
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.nginx-demo-1.loadbalancer.server.port=80"
