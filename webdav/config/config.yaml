@@ -1,0 +1,13 @@
+address: 0.0.0.0
+port: 2345
+
+tls: false
+behindProxy: true
+
+directory: /data
+
+permissions: CRUD
+
+users:
+  - username: "{env}WEBDAV_USERNAME"
+    password: "{env}WEBDAV_PASSWORD"

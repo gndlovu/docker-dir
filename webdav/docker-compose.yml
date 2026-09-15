@@ -1,0 +1,19 @@
+services:
+  webdav:
+    image: ghcr.io/hacdias/webdav:latest
+    container_name: webdav
+    restart: unless-stopped
+
+    environment:
+      WEBDAV_USERNAME: ${WEBDAV_USERNAME}
+      WEBDAV_PASSWORD: ${WEBDAV_PASSWORD}
+
+    volumes:
+      - ./config/config.yml:/config.yml:ro
+      - ./data:/data
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.webdav.rule=Host(`dav.gladwelln.dev`)"
+      - "traefik.http.routers.webdav.entrypoints=web"
+      - "traefik.http.services.webdav.loadbalancer.server.port=2345"
