@@ -1,0 +1,10 @@
+services:
+  redisinsight:
+    image: redis/redisinsight:latest
+    container_name: redisinsight
+    volumes:
+      - redisinsight_host_data:/data
+    restart: always
+
+volumes:
+  redisinsight_host_data:
