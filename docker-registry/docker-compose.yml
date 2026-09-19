@@ -8,16 +8,14 @@ services:
       REGISTRY_AUTH: htpasswd
       REGISTRY_AUTH_HTPASSWD_REALM: Registry Realm
       REGISTRY_AUTH_HTPASSWD_PATH: /auth/htpasswd
+      REGISTRY_HTTP_RELATIVEURLS: "true"
     volumes:
-      - registry-data:/var/lib/registry
+      - /shared/docker-volumes/registry-data:/var/lib/registry
       - ./config.yml:/etc/docker/registry/config.yml
       - ./auth:/auth:ro
     networks:
       - frontend
     restart: unless-stopped
-
-volumes:
-  registry-data:
 networks:
   frontend:
     external: true
