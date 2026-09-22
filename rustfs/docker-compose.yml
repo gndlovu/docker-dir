@@ -1,0 +1,16 @@
+services:
+  rustfs:
+    image: rustfs/rustfs:latest
+    container_name: rustfs-server
+    restart: unless-stopped
+    ports:
+      - "9000:9000"  # S3 API Port
+      - "9001:9001"  # Admin Web Console Port
+    environment:
+      # CRITICAL: Always change these placeholder values before exposing to a network
+      - RUSTFS_ACCESS_KEY=${RUSTFS_ACCESS_KEY}
+      - RUSTFS_SECRET_KEY=${RUSTFS_SECRET_KEY}
+      # Target data directory inside the container
+      - RUSTFS_VOLUMES=/data
+    volumes:
+      - ./data:/data
