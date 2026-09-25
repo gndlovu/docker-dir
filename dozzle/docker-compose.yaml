@@ -1,0 +1,27 @@
+services:
+  dozzle:
+    image: amir20/dozzle:latest
+    container_name: dozzle
+    restart: always
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - "3004:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - DOZZLE_REMOTE_HOST=${DOZZLE_REMOTE_HOST}
+      - DOZZLE_USERNAME=${DOZZLE_USERNAME}
+      - DOZZLE_PASSWORD=${DOZZLE_PASSWORD}
+    networks:
+      - frontend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dozzle.entrypoints=web"
+      - "traefik.http.routers.dozzle.rule=Host(`${DOZZLE_HOSTNAME}`)"
+      - "traefik.http.routers.dozzle.service=dozzle-service"
+      - "traefik.http.services.dozzle-service.loadbalancer.server.port=3004"
+
+networks:
+  frontend:
+    external: true
