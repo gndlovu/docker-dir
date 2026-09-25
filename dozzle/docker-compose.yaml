@@ -9,6 +9,7 @@ services:
       - "3004:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - dozzle_data:/data
     environment:
       - DOZZLE_REMOTE_HOST=${DOZZLE_REMOTE_HOST}
       - DOZZLE_USERNAME=${DOZZLE_USERNAME}
@@ -25,3 +26,6 @@ services:
 networks:
   frontend:
     external: true
+
+volumes:
+  dozzle_data:
