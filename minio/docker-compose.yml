@@ -1,14 +1,36 @@
+version: "3.8"
+
 services:
   minio:
     image: quay.io/minio/minio:latest
-    container_name: minio-local
-    ports:
-      - "9002:9000"  # API will be available on host port 9002
-      - "9003:9001"  # Console will be available on host port 9003
-    environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
-    volumes:
-      - ./minio_data:/data
-    command: server /data --console-address ":9001"
+    container_name: minio
     restart: always
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - ./config:/root/.minio
+      - /mnt/pve/truenas-vault/s3-data:/data
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ADMIN_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ADMIN_PASSWORD}
+    command: server /data --console-address ":9001"
+    networks:
+      - frontend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.minio-console.entrypoints=web"
+      - "traefik.http.routers.minio-console.rule=Host(`${MINIO_CONSOLE_HOSTNAME}`)"
+      - "traefik.http.routers.minio-console.service=minio-console-service"
+      - "traefik.http.services.minio-console-service.loadbalancer.server.port=9001"
+
+      - "traefik.http.routers.minio-api.entrypoints=web"
+      - "traefik.http.routers.minio-api.rule=Host(`${MINIO_API_HOSTNAME}`)"
+      - "traefik.http.routers.minio-api.service=minio-api-service"
+      - "traefik.http.services.minio-api-service.loadbalancer.server.port=9000"
+
+networks:
+  frontend:
+    external: true
