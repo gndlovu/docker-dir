@@ -1,0 +1,63 @@
+services:
+  backend:
+    image: ghcr.io/pouzor/homelable-backend:latest
+    container_name: homelable-backend
+    restart: unless-stopped
+    environment:
+      - SECRET_KEY=${HOMELABLE_SECRET_KEY}
+      - SQLITE_PATH=/app/data/homelab.db
+      - CORS_ORIGINS=${HOMELABLE_CORS_ORIGINS}
+      - AUTH_MODE=${HOMELABLE_AUTH_MODE:-local}
+      - AUTH_USERNAME=${HOMELABLE_AUTH_USERNAME:-admin}
+      - AUTH_PASSWORD_HASH=${HOMELABLE_AUTH_PASSWORD_HASH}
+      - SCANNER_RANGES=${HOMELABLE_SCANNER_RANGES:-["192.168.1.0/24"]}
+      - MCP_API_KEY=${HOMELABLE_MCP_API_KEY}
+      - MCP_SERVICE_KEY=${HOMELABLE_MCP_SERVICE_KEY}
+    volumes:
+      - /apps-data/homelable/data:/app/data
+    # Required for ping-based status checks
+    cap_add:
+      - NET_RAW
+    networks:
+      - frontend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 15s
+
+  frontend:
+    image: ghcr.io/pouzor/homelable-frontend:latest
+    container_name: homelable-frontend
+    restart: unless-stopped
+    ports:
+      - "3007:80"
+    depends_on:
+      - backend
+    networks:
+      - frontend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.homelable.rule=Host(`${HOMELABLE_HOSTNAME}`)"
+      - "traefik.http.routers.homelable.entrypoints=web"
+      - "traefik.http.services.homelable.loadbalancer.server.port=3007"
+
+  mcp:
+    image: ghcr.io/pouzor/homelable-mcp:latest
+    container_name: homelable-mcp
+    restart: unless-stopped
+    ports:
+      - "8002:8001"
+    environment:
+      - BACKEND_URL=http://backend:8000
+      - MCP_API_KEY=${HOMELABLE_MCP_API_KEY}
+      - MCP_SERVICE_KEY=${HOMELABLE_MCP_SERVICE_KEY}
+    depends_on:
+      - backend
+    networks:
+      - frontend
+
+networks:
+  frontend:
+    external: true
