@@ -1,2 +1,3 @@
-pgsql/postgres-data
+servers/db-server/pgsql/postgres-data
 .history
+.DS_Store
