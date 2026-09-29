@@ -14,7 +14,7 @@ services:
       - MCP_API_KEY=${HOMELABLE_MCP_API_KEY}
       - MCP_SERVICE_KEY=${HOMELABLE_MCP_SERVICE_KEY}
     volumes:
-      - /apps-data/homelable/data:/app/data
+      - homelable_data:/app/data
     # Required for ping-based status checks
     cap_add:
       - NET_RAW
@@ -57,6 +57,11 @@ services:
       - backend
     networks:
       - frontend
+
+volumes:
+  # Local Docker volume, not the /apps-data SMB mount — SQLite's file locking
+  # (and WAL mode) is unreliable over SMB/NFS and causes "database is locked".
+  homelable_data:
 
 networks:
   frontend:
