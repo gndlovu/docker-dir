@@ -13,4 +13,15 @@ services:
       # Target data directory inside the container
       - RUSTFS_VOLUMES=/data
     volumes:
-      - ./data:/data
+      - /apps-data/s3:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.rustfs-api.entrypoints=web"
+      - "traefik.http.routers.rustfs-api.rule=Host(`${RUSTFS_API_HOSTNAME}`)"
+      - "traefik.http.routers.rustfs-api.service=rustfs-api-service"
+      - "traefik.http.services.rustfs-api-service.loadbalancer.server.port=9000"
+
+      - "traefik.http.routers.rustfs-console.entrypoints=web"
+      - "traefik.http.routers.rustfs-console.rule=Host(`${RUSTFS_CONSOLE_HOSTNAME}`)"
+      - "traefik.http.routers.rustfs-console.service=rustfs-console-service"
+      - "traefik.http.services.rustfs-console-service.loadbalancer.server.port=9001"

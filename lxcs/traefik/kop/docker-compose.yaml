@@ -7,7 +7,7 @@ services:
       # Allows the agent to watch local containers spin up/down
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
-      - REDIS_ADDR=${REDIS_ADDR}
+      - REDIS_ADDR=${DB_HOST}:${REDIS_PORT}
       - REDIS_PASS=${REDIS_PASSWORD}
       - REDIS_KEY=${REDIS_KEY}
       - DEBUG=1
