@@ -14,6 +14,8 @@ services:
       - RUSTFS_VOLUMES=/data
     volumes:
       - /apps-data/s3:/data
+    networks:
+      - frontend
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.rustfs-api.entrypoints=web"
@@ -25,3 +27,7 @@ services:
       - "traefik.http.routers.rustfs-console.rule=Host(`${RUSTFS_CONSOLE_HOSTNAME}`)"
       - "traefik.http.routers.rustfs-console.service=rustfs-console-service"
       - "traefik.http.services.rustfs-console-service.loadbalancer.server.port=9001"
+
+networks:
+  frontend:
+    external: true

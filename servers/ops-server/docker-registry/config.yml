@@ -3,7 +3,8 @@ version: 0.1
 http:
   addr: :5000
   headers:
-    Access-Control-Allow-Origin: ['http://192.168.68.9:2002']
+    # Access-Control-Allow-Origin is set via REGISTRY_HTTP_HEADERS_ACCESS-CONTROL-ALLOW-ORIGIN
+    # in docker-compose.yml so it shares one value with the UI's proxy target.
     Access-Control-Allow-Methods: ['HEAD', 'GET', 'OPTIONS', 'DELETE', 'PUT']
     Access-Control-Allow-Headers: ['Authorization', 'Accept', 'Cache-Control']
     Access-Control-Expose-Headers: ['Docker-Content-Digest']

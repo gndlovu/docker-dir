@@ -10,6 +10,9 @@ services:
       REGISTRY_AUTH_HTPASSWD_REALM: Registry Realm
       REGISTRY_AUTH_HTPASSWD_PATH: /auth/htpasswd
       REGISTRY_HTTP_RELATIVEURLS: "true"
+      # Overrides config.yml's Access-Control-Allow-Origin so the UI's host
+      # only needs updating here, not in both places.
+      REGISTRY_HTTP_HEADERS_ACCESS-CONTROL-ALLOW-ORIGIN: "[http://${REGISTRY_HOST_IP}:2002]"
     volumes:
       - /shared/docker-volumes/registry-data:/var/lib/registry
       - ./config.yml:/etc/docker/registry/config.yml

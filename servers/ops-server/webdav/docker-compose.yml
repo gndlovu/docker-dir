@@ -12,8 +12,15 @@ services:
       - ./config/config.yml:/config.yml:ro
       - ./data:/data
 
+    networks:
+      - frontend
+
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.webdav.rule=Host(`dav.gladwelln.dev`)"
+      - "traefik.http.routers.webdav.rule=Host(`${WEBDAV_HOSTNAME}`)"
       - "traefik.http.routers.webdav.entrypoints=web"
       - "traefik.http.services.webdav.loadbalancer.server.port=2345"
+
+networks:
+  frontend:
+    external: true

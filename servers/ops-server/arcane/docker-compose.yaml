@@ -16,7 +16,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.services.arcane.loadbalancer.server.port=3552"
       - "traefik.http.routers.arcane-http.entrypoints=web"
-      - "traefik.http.routers.arcane-http.rule=Host(`arcane.gladwelln.dev`)"
+      - "traefik.http.routers.arcane-http.rule=Host(`${ARCANE_HOSTNAME}`)"
     restart: unless-stopped
     networks:
       - frontend

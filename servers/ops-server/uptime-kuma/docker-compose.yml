@@ -12,7 +12,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.services.uptime-kuma.loadbalancer.server.port=3001"
       - "traefik.http.routers.uptime-kuma-http.entrypoints=web"
-      - "traefik.http.routers.uptime-kuma-http.rule=Host(`uptime.gladwelln.dev`)"
+      - "traefik.http.routers.uptime-kuma-http.rule=Host(`${UPTIME_KUMA_HOSTNAME}`)"
     restart: unless-stopped
     networks:
       - frontend

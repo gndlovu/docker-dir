@@ -23,7 +23,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.services.infisical.loadbalancer.server.port=8080"
       - "traefik.http.routers.infisical-http.entrypoints=web"
-      - "traefik.http.routers.infisical-http.rule=Host(`secrets.gladwelln.dev`)"
+      - "traefik.http.routers.infisical-http.rule=Host(`${INFISICAL_HOSTNAME}`)"
 
 networks:
   frontend:

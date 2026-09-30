@@ -18,7 +18,7 @@ services:
       retries: 5
     labels:
       - traefik.enable=true
-      - traefik.http.routers.umami.rule=Host(`analytics.gladwelln.dev`)
+      - traefik.http.routers.umami.rule=Host(`${UMAMI_HOSTNAME}`)
       - traefik.http.routers.umami.entrypoints=web
       - traefik.http.services.umami.loadbalancer.server.port=3000
       - traefik.http.services.umami.loadbalancer.healthcheck.path=/api/heartbeat

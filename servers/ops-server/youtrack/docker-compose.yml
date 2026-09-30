@@ -11,8 +11,14 @@ services:
       - ./conf:/opt/youtrack/conf
       - ./logs:/opt/youtrack/logs
       - /apps-data/youtrack/backups:/opt/youtrack/backups
+    networks:
+      - frontend
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.youtrack.rule=Host(`tasks.gladwelln.dev`)"
+      - "traefik.http.routers.youtrack.rule=Host(`${YOUTRACK_HOSTNAME}`)"
       - "traefik.http.routers.youtrack.entrypoints=web"
       - "traefik.http.services.youtrack-svc.loadbalancer.server.port=3006"
+
+networks:
+  frontend:
+    external: true

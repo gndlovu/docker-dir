@@ -24,7 +24,7 @@ services:
     #   PEGAPROX_ALLOWED_ORIGINS: "https://pegaprox.example.com"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.pegaprox.rule=Host(`prox.gladwelln.dev`)"
+      - "traefik.http.routers.pegaprox.rule=Host(`${PEGAPROX_HOSTNAME}`)"
       - "traefik.http.routers.pegaprox.entrypoints=web"
       - "traefik.http.services.pegaprox.loadbalancer.server.port=5000"
 volumes:

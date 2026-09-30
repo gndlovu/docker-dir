@@ -18,8 +18,14 @@ services:
       SEMAPHORE_ADMIN_PASSWORD: ${SEMAPHORE_ADMIN_PASSWORD}
       SEMAPHORE_ADMIN_EMAIL: ${SEMAPHORE_ADMIN_EMAIL}
       SEMAPHORE_ACCESS_KEY_ENCRYPTION: ${SEMAPHORE_ACCESS_KEY_ENCRYPTION}
+    networks:
+      - frontend
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.semaphore.rule=Host(`semaphore.gladwelln.dev`)"
+      - "traefik.http.routers.semaphore.rule=Host(`${SEMAPHORE_HOSTNAME}`)"
       - "traefik.http.routers.semaphore.entrypoints=web"
       - "traefik.http.services.semaphore.loadbalancer.server.port=2001"
+
+networks:
+  frontend:
+    external: true

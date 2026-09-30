@@ -33,8 +33,14 @@ services:
       - PORT_redis_db=${REDIS_PORT:-6379}
       - USER_redis_db=${REDIS_USER}
       - PASSWORD_redis_db=${REDIS_PASSWORD}
+    networks:
+      - frontend
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.dbgate.rule=Host(`${DBGATE_HOSTNAME}`)"
       - "traefik.http.routers.dbgate.entrypoints=web"
       - "traefik.http.services.dbgate.loadbalancer.server.port=${DBGATE_PORT:-3005}"
+
+networks:
+  frontend:
+    external: true
